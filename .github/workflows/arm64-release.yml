@@ -1,10 +1,17 @@
 name: Build and Release ARM64 Binary
 
-on:
-  push:
-    tags:
-      - 'v*'
+# on:
+#   push:
+#     tags:
+#       - 'v*'
 
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "The version to release (must be prefixed with 'v')"
+        required: true
+        
 jobs:
   build:
     name: Build ARM64 Binary
