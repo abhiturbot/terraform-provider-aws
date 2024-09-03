@@ -35,15 +35,25 @@ jobs:
         with:
           go-version: '1.16'        
 
-      - name: Build ARM64 Binary
+      - name: Build Linux ARM64 Binary
         run: |
           CGO_ENABLED=0 GOARCH=arm64 GOOS=linux go build -o terraform-provider-aws_${{ env.VERSION }}_linux_arm64
 
-      - name: Upload Binary as Artifact
+      - name: Build Darwin ARM64 Binary
+        run: |
+          CGO_ENABLED=0 GOARCH=arm64 GOOS=linux go build -o terraform-provider-aws_${{ env.VERSION }}_darwin_arm64
+
+      - name: Upload Linux Binary as Artifact
         uses: actions/upload-artifact@v3
         with:
           name: terraform-provider-aws_${{ env.VERSION }}_linux_arm64
           path: terraform-provider-aws_${{ env.VERSION }}_linux_arm64
+
+      - name: Upload Darwin Binary as Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: terraform-provider-aws_${{ env.VERSION }}_darwin_arm64
+          path: terraform-provider-aws_${{ env.VERSION }}_darwin_arm64
 
   release:
     name: Create GitHub Release
@@ -51,14 +61,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Download Binary
+      - name: Extract Version
+        id: extract_version
+        run: |
+          echo "VERSION=${{ github.event.inputs.version }}" >> $GITHUB_ENV 
+   
+      - name: Download Linux Binary
         uses: actions/download-artifact@v3
         with:
           name: terraform-provider-aws_${{ env.VERSION }}_linux_arm64
 
+      - name: Download Darwin Binary
+        uses: actions/download-artifact@v3
+        with:
+          name: terraform-provider-aws_${{ env.VERSION }}_darwin_arm64          
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
-        with:
-          files: terraform-provider-aws_${{ env.VERSION }}_linux_arm64
+        name: ${{ env.VERSION }}
+        tag_name: ${{ env.VERSION }}
+        repository: ${{ github.repository }}
+        files: |-
+          terraform-provider-aws_${{ env.VERSION }}_darwin_arm64
+          terraform-provider-aws_${{ env.VERSION }}_linux_arm64
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
