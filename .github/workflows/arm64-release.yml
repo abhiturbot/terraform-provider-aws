@@ -41,7 +41,7 @@ jobs:
 
       - name: Build Darwin ARM64 Binary
         run: |
-          CGO_ENABLED=0 GOARCH=arm64 GOOS=linux go build -o terraform-provider-aws_${{ env.VERSION }}_darwin_arm64
+          CGO_ENABLED=0 GOARCH=arm64 GOOS=darwin go build -o terraform-provider-aws_${{ env.VERSION }}_darwin_arm64
 
       - name: Upload Linux Binary as Artifact
         uses: actions/upload-artifact@v3
