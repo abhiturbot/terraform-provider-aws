@@ -37,13 +37,13 @@ jobs:
 
       - name: Build ARM64 Binary
         run: |
-          CGO_ENABLED=0 GOARCH=arm64 GOOS=linux go build -o terraform-provider-aws_v${{ env.VERSION }}_linux_arm64
+          CGO_ENABLED=0 GOARCH=arm64 GOOS=linux go build -o terraform-provider-aws_${{ env.VERSION }}_linux_arm64
 
       - name: Upload Binary as Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: terraform-provider-aws_v${{ env.VERSION }}_linux_arm64
-          path: terraform-provider-aws_v${{ env.VERSION }}_linux_arm64
+          name: terraform-provider-aws_${{ env.VERSION }}_linux_arm64
+          path: terraform-provider-aws_${{ env.VERSION }}_linux_arm64
 
   release:
     name: Create GitHub Release
@@ -54,11 +54,11 @@ jobs:
       - name: Download Binary
         uses: actions/download-artifact@v3
         with:
-          name: terraform-provider-aws_v${{ env.VERSION }}_linux_arm64
+          name: terraform-provider-aws_${{ env.VERSION }}_linux_arm64
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          files: terraform-provider-aws_v${{ env.VERSION }}_linux_arm64
+          files: terraform-provider-aws_${{ env.VERSION }}_linux_arm64
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
