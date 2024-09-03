@@ -3,7 +3,7 @@ name: Build and Release ARM64 Binary
 on:
   push:
     tags:
-      - 'v*.*.*-arm64'
+      - 'v[0-9]+.[0-9]+.[0-9]+*'
 
 jobs:
   build:
