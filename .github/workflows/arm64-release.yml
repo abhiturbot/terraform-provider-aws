@@ -78,11 +78,12 @@ jobs:
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
-        name: ${{ env.VERSION }}
-        tag_name: ${{ env.VERSION }}
-        repository: ${{ github.repository }}
-        files: |-
-          terraform-provider-aws_${{ env.VERSION }}_darwin_arm64
-          terraform-provider-aws_${{ env.VERSION }}_linux_arm64
+        with:
+          name: ${{ env.VERSION }}
+          tag_name: ${{ env.VERSION }}
+          repository: ${{ github.repository }}
+          files: |-
+            terraform-provider-aws_${{ env.VERSION }}_darwin_arm64
+            terraform-provider-aws_${{ env.VERSION }}_linux_arm64
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
