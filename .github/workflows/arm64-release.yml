@@ -29,8 +29,10 @@ jobs:
       - name: Extract Version
         id: extract_version
         run: |
-          VERSION=${{ github.ref_name%-arm64 }}
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          # VERSION="${{ github.ref_name }}"
+          # VERSION=${VERSION%-arm64}
+          # echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "VERSION=${{ github.event.inputs.version }}" >> $GITHUB_ENV
 
       - name: Build ARM64 Binary
         run: |
